@@ -31,18 +31,22 @@ describe "BunnyMock Integration Tests", :integration => true do
     exchange.publish("Message 2")
     exchange.publish("Message 3")
 
+    queue.publish("queue published")
+
     # Verify state of the queue
-    queue.messages.should have(3).messages
+    queue.messages.should have(4).messages
     queue.messages.should == [
       "Message 1",
       "Message 2",
-      "Message 3"
+      "Message 3",
+      "queue published"
     ]
-    queue.snapshot_messages.should have(3).messages
+    queue.snapshot_messages.should have(4).messages
     queue.snapshot_messages.should == [
       "Message 1",
       "Message 2",
-      "Message 3"
+      "Message 3",
+      "queue published"
     ]
 
     # Here's what we expect to happen when we subscribe to this queue.
@@ -50,6 +54,7 @@ describe "BunnyMock Integration Tests", :integration => true do
     handler.should_receive(:handle_message).with("Message 1").ordered
     handler.should_receive(:handle_message).with("Message 2").ordered
     handler.should_receive(:handle_message).with("Message 3").ordered
+    handler.should_receive(:handle_message).with("queue published").ordered
 
     # Read all those messages
     msg_count = 0
@@ -234,7 +239,7 @@ describe BunnyMock::Exchange do
     Then { exchange.should_not be_bound_to("another_queue") }
   end
 
-  describe "#publish" do
+  describe "exchange #publish" do
     Given(:queue1) { BunnyMock::Queue.new("queue1") }
     Given(:queue2) { BunnyMock::Queue.new("queue2") }
     Given { queue1.bind(exchange) }
@@ -244,6 +249,12 @@ describe BunnyMock::Exchange do
     Then { queue1.snapshot_messages.should == ["hello"] }
     Then { queue2.messages.should == ["hello"] }
     Then { queue2.snapshot_messages.should == ["hello"] }
+  end
+  describe "queue #publish" do
+    Given(:queue1) { BunnyMock::Queue.new("queue1") }
+    When { queue1.publish("hello") }
+    Then { queue1.messages.should == ["hello"] }
+    Then { queue1.snapshot_messages.should == ["hello"] }
   end
 
   describe "#method_missing" do

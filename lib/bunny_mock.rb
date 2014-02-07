@@ -53,6 +53,10 @@ class BunnyMock
       exchange.queues << self
     end
 
+    def publish(msg, msg_attrs = {})
+      self.messages << msg
+    end
+
     # Note that this doesn't block waiting for messages like the real world.
     def subscribe(*args, &block)
       while message = messages.shift
