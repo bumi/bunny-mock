@@ -21,6 +21,10 @@ class BunnyMock
     nil
   end
 
+  def create_channel
+    self
+  end
+
   def queue(*attrs)
     BunnyMock::Queue.new(*attrs)
   end

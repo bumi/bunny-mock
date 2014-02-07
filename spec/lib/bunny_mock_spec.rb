@@ -69,6 +69,11 @@ describe BunnyMock do
     Then { bunny.should be_connected }
   end
 
+  describe "#create_channel" do
+    # we do not implement Channels but just use self - which implements all needed methods
+    Then { bunny.create_channel.should == bunny }
+  end
+
   describe "#start" do
     Then { bunny.start.should == :connected }
   end
