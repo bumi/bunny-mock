@@ -1,5 +1,9 @@
 class BunnyMock
 
+  def initialize(connection_string_or_opts = {}, opts = {}, &block)
+    # ignore the options for now
+  end
+
   def open?
     true
   end

@@ -62,7 +62,7 @@ describe "BunnyMock Integration Tests", :integration => true do
 end
 
 describe BunnyMock do
-  Given(:bunny) { BunnyMock.new }
+  Given(:bunny) { BunnyMock.new({}, {}) }
 
   describe "#open?" do
     Then { bunny.should be_open }
