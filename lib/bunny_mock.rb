@@ -1,5 +1,10 @@
 class BunnyMock
 
+  def open?
+    true
+  end
+  alias connected? open?
+
   def start
     :connected
   end

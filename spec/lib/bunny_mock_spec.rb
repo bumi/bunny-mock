@@ -64,6 +64,11 @@ end
 describe BunnyMock do
   Given(:bunny) { BunnyMock.new }
 
+  describe "#open?" do
+    Then { bunny.should be_open }
+    Then { bunny.should be_connected }
+  end
+
   describe "#start" do
     Then { bunny.start.should == :connected }
   end
